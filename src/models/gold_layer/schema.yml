@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: gold_match_events_analysis
+    description: "Enriched table for match event analysis, joining event facts with match, player, and team dimensions. This is the primary table for BI and data analysis."
+    columns:
+      - name: match_id
+        description: "Unique identifier for the match."
+        tests:
+          - not_null
+      - name: event_id
+        description: "Unique identifier for the event."
+        tests:
+          - not_null
+      - name: team_id
+        description: "Identifier for the team involved in the event."
+        tests:
+          - not_null
+      - name: player_name
+        description: "Name of the player involved in the event."
+      - name: team_name
+        description: "Name of the team involved in the event." 

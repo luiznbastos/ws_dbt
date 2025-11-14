@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: whoscored_db
+    schema: public
+    tables:
+      - name: event_main
+        identifier: event_main
+      - name: event_types
+        identifier: event_types
+      - name: event_qualifiers
+        identifier: event_qualifiers
+      - name: satisfied_event_types
+        identifier: satisfied_event_types
+      - name: monthly_matches
+        identifier: monthly_matches
+      - name: season_matches
+        identifier: season_matches

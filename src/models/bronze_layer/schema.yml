@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: stg_event_main
+    description: "Staging table for main event data from WhoScored"
+    columns:
+      - name: match_id
+        description: "Unique identifier for the match"
+        tests:
+          - not_null
+      - name: event_id
+        description: "Unique identifier for the event within a match"
+        tests:
+          - not_null
+      - name: team_id
+        description: "Team performing the event"
+        tests:
+          - not_null
+      - name: player_id
+        description: "Player performing the event"
+      - name: player_name
+        description: "Name of the player performing the event"
+      - name: type
+        description: "Type of event (pass, shot, tackle, etc.)"
+        tests:
+          - not_null
+      - name: outcome_type
+        description: "Outcome of the event (successful, unsuccessful)"
+      - name: minute
+        description: "Minute of the match when event occurred"
+        tests:
+          - not_null
+      - name: second
+        description: "Second within the minute when event occurred"
+      - name: x
+        description: "X coordinate on the pitch (0-100)"
+      - name: y
+        description: "Y coordinate on the pitch (0-100)"
+
+  - name: stg_event_qualifiers
+    description: "Staging table for event qualifiers that provide additional context"
+    columns:
+      - name: match_id
+        description: "Match identifier"
+        tests:
+          - not_null
+      - name: event_id
+        description: "Event identifier"
+        tests:
+          - not_null
+      - name: team_id
+        description: "Team identifier"
+        tests:
+          - not_null
+      - name: id
+        description: "Internal event ID"
+        tests:
+          - not_null
+      - name: qualifier_type
+        description: "Array of qualifier types for the event"
+
+  - name: stg_satisfied_event
+    description: "Staging table for satisfied event types"
+    columns:
+      - name: match_id
+        description: "Match identifier"
+        tests:
+          - not_null
+      - name: event_id
+        description: "Event identifier"
+        tests:
+          - not_null
+      - name: team_id
+        description: "Team identifier"
+        tests:
+          - not_null
+      - name: id
+        description: "Internal event ID"
+        tests:
+          - not_null
+      - name: satisfied_types
+        description: "Array of satisfied event types" 
