@@ -35,7 +35,7 @@ select
   sum(case when fe.is_aerial and fe.outcome_type ilike 'successful' then 1 else 0 end) as aerials_won,
 
   -- Discipline and transitions
-  sum(case when fe.is_foul thenview 1 else 0 end) as fouls_committed,
+  sum(case when fe.is_foul then 1 else 0 end) as fouls_committed,
   sum(case when fe.is_loss_possession then 1 else 0 end) as turnovers,
   sum(case when fe.is_error then 1 else 0 end) as errors
 

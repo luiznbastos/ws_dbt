@@ -53,3 +53,70 @@ resource "aws_iam_role_policy_attachment" "cloudwatch" {
   policy_arn = data.aws_iam_policy.cloudwatch_policy.arn
 }
 
+# IAM Role for ECS Task Execution (pulls secrets and logs)
+resource "aws_iam_role" "execution_role" {
+  name = "${var.project_name}-${var.job_name}-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ecs-tasks.amazonaws.com"
+      }
+    }]
+  })
+
+  tags = {
+    Project = var.project_name
+    Job     = var.job_name
+  }
+}
+
+resource "aws_iam_role_policy" "execution_secrets" {
+  name = "${var.job_name}-execution-secrets"
+  role = aws_iam_role.execution_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameter"
+        ]
+        Resource = [
+          data.aws_ssm_parameter.db_host.arn,
+          data.aws_ssm_parameter.db_username.arn,
+          data.aws_ssm_parameter.db_password.arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["ecr:GetAuthorizationToken"]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage"
+        ]
+        Resource = "arn:aws:ecr:${var.aws_region}:*:repository/ws_dbt"
+      }
+    ]
+  })
+}
+

@@ -16,3 +16,5 @@ sources:
         identifier: monthly_matches
       - name: season_matches
         identifier: season_matches
+      - name: seasons
+        identifier: seasons

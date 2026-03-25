@@ -5,10 +5,11 @@ resource "aws_batch_job_definition" "this" {
   platform_capabilities = ["EC2"]
 
   container_properties = jsonencode({
-    image      = "${data.aws_ssm_parameter.ecr_url.value}:latest"
-    vcpus      = var.vcpus
-    memory     = var.memory
-    jobRoleArn = aws_iam_role.job_role.arn
+    image            = "${data.aws_ssm_parameter.ecr_url.value}:latest"
+    vcpus            = var.vcpus
+    memory           = var.memory
+    jobRoleArn       = aws_iam_role.job_role.arn
+    executionRoleArn = aws_iam_role.execution_role.arn
 
     environment = [
       {
